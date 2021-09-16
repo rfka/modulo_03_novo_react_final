@@ -68,6 +68,6 @@ h2{
 }
 
 h4{
-    width: 350px;
+    min-width: 350px;
     text-align: center;
 }

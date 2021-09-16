@@ -89,11 +89,11 @@ const Home = () =>{
                     <form className='cad-tdl' onSubmit={onSubmit}>
                         <div className='cad-tdl-item'>
                             <label>Tarefa</label>
-                            <input placeholder='  Nome da Tarefa' value={nomeTarefa} onChange={(e) =>{setNome(e.target.value);}} className='input-cad' type='text' required />
+                            <input placeholder='  Nome da Tarefa' value={nomeTarefa} onChange={(e) =>{setNome(e.target.value);}} className='input-cad' required />
                         </div>
                         <div className='cad-tdl-item'>
                             <label>Descrição</label>
-                            <input placeholder=' Descrição Tarefa' value={descricaoTarefa} onChange={(e) =>{setDescricao(e.target.value);}} className='input-cad' type='text' required />
+                            <input placeholder=' Descrição Tarefa' value={descricaoTarefa} onChange={(e) =>{setDescricao(e.target.value);}} className='input-cad' required />
                         </div>
                         <input className='btn-cad' type='submit' value='Cadastrar'/>
                     </form>
