@@ -1,35 +1,35 @@
 import React, { useState, useEffect } from 'react';
 import './Home.css';
 
-const database_url = 'http://localhost:3000';
+const database_url = 'http://localhost:4000';
 
 const Home = () =>{
 
     const [tarefas, setTarefas] = useState([]);
-    const [nomeTarefa, setNomeTarefa] = useState('');
-    const [descricaoTarefa, setDescricao] = useState('');
-    const [situacaoTarefa, setSituacao] = useState('');
-    const [alteracaoTarefa, setAlteracao] = useState('');
+    const [nomeTarefa, setNome] = useState("");
+    const [descricaoTarefa, setDescricao] = useState("");
+    const [situacaoTarefa, setSituacao] = useState("");
+    const [alteracaoTarefa, setAlteracao] = useState("");
     const [editando, setEditando] = useState(false);
-    const [idEditando, setIdEditasndo] = useState(null);
+    const [idEditando, setIdEditando] = useState(null);
 
-    const carregaTarefas = async() => {
-        const Response = await fetch(`${database_url}/tarefas`);
-        const data = await Response.json();
+    const loadTarefas = async() => {
+        const response = await fetch(`${database_url}/tarefas`);
+        const data = await response.json();
         setTarefas(data);
     };
 
     useEffect(() =>{
-        carregaTarefas();
+        loadTarefas();
     }, []);
 
     useEffect(() =>{
         if(idEditando !== null && editando){
-            const tarefa = tarefas.find((t) =>t.id === idEditando);
-            setNomeTarefa(tarefa.nomeTarefa);
-            setDescricao(tarefa.descricaoTarefa);
-            setSituacao(tarefas.situacaoTarefa);
-            setAlteracao(tarefa.alteracaoTarefa);
+            const tarefa = tarefas.find((t) =>t._id === idEditando);
+            setNome(tarefa.nome);
+            setDescricao(tarefa.descricao);
+            setSituacao(tarefa.situacao);
+            setAlteracao(tarefa.alteracao);
         }
     }, [idEditando]);
 
@@ -37,71 +37,86 @@ const Home = () =>{
         e.preventDefault();
         
         if(editando) {
-            await fetch(`${database_url}/tarefas/${idEditando}`,{
+            await fetch(`${database_url}/tarefas/update/${idEditando}`,{
                 method: 'PUT',
                 headers: {'Content-Type': 'Application/json',
             },
             body: JSON.stringify({
-                tarefa: nomeTarefa,
-                descricao: descricaoTarefa,
-                prioridade: situacaoTarefa,
-                alteracao: alteracaoTarefa,
+                nomeTarefa: nomeTarefa,
+                descricaoTarefa: descricaoTarefa,
+                prioridadeTarefa: situacaoTarefa,
+                alteracaoTarefa: alteracaoTarefa,
             }),
         });
 
         setEditando(false);
-        setIdEditasndo(null);
+        setIdEditando(null);
         }else{
-            await fetch(`$(datbase_url)/tarefas`,{
+            await fetch(`${database_url}/tarefas/add`,{
                 method: 'POST',
-                headers: {'Content-Type': 'application/json'},
+                headers: {'Content-Type': 'application/json',
+            },
                 body: JSON.stringify({
-                    tarefa: nomeTarefa,
-                    descricao: descricaoTarefa,
-                    prioridade: situacaoTarefa,
-                    alteracao: alteracaoTarefa,
+                    nomeTarefa: nomeTarefa,
+                    descricaoTarefa: descricaoTarefa,
+                    prioridadeTarefa: situacaoTarefa,
+                    alteracaoTarefa: alteracaoTarefa,
                 }),
             });
         }
 
-        carregaTarefas();
-        setNomeTarefa('');
+        loadTarefas();
+        setNome('');
         setDescricao('');
         setSituacao('');
         setAlteracao('');
     };
 
     const deletar = async(id) =>{
-        await fetch(`${database_url}/tarefas/$(id)`, {
-            method: 'DELETE',
+        await fetch(`${database_url}/tarefas/delete/${id}`, {
+            method: 'DELETE'
         });
-        carregaTarefas();
+        loadTarefas();
     };
 
     return(
         <>
             <div className='container'>
                 <h1>Minhas Tarefas</h1>
-                <div className='cad-tdl'>
-                    <div className='cad-tdl-item'>
-                        <label>Tarefa</label>
-                        <input className='input-cad' type='text' />
-                    </div>
-                    <div className='cad-tdl-item'>
-                        <label>Descrição</label>
-                        <input className='input-cad' type='text' />
-                    </div>
-                    <button className='btn-cad'>Cadastrar Tarefa</button>
+                <h1>{editando ? `Editando: ${tarefas.find((t) => t._id === idEditando)?.nomeTarefa}`: "Cadastre uma nova Tarefa!!"}</h1>
+
+                <div>
+                    <form className='cad-tdl' onSubmit={onSubmit}>
+                        <div className='cad-tdl-item'>
+                            <label>Tarefa</label>
+                            <input placeholder='  Nome da Tarefa' value={nomeTarefa} onChange={(e) =>{setNome(e.target.value);}} className='input-cad' type='text' required />
+                        </div>
+                        <div className='cad-tdl-item'>
+                            <label>Descrição</label>
+                            <input placeholder=' Descrição Tarefa' value={descricaoTarefa} onChange={(e) =>{setDescricao(e.target.value);}} className='input-cad' type='text' required />
+                        </div>
+                        <input className='btn-cad' type='submit' value='Cadastrar'/>
+                    </form>
                 </div>
                 <div className='list-tdl'>
                     <div className='list-td'>
                         {tarefas.map((t, index) =>(
-                            <div>
-                                <li key={index}></li>
-                                <h2>{t.nomeTarefa}</h2>
-                                <h4>{t.descricaoTarefa}</h4>
-                                <p>{t.situacaoTarefa}</p>
-                                <p>{t.alteracaoTarefa}</p>
+                            <div className='list-td-2'>
+                                <div key={index}></div>
+                                    <div>
+                                        <h2>{t.nomeTarefa}</h2>
+                                    </div>
+                                    <div>
+                                        <h4>{t.descricaoTarefa}</h4>
+                                    </div>
+                                    <div>
+                                        <p>{t.situacaoTarefa}</p>
+                                    </div>
+                                    <div>
+                                        <p>{t.alteracaoTarefa}</p>
+                                    </div>
+                                <button className='btn-editar' onClick={()=> {setEditando(true);setIdEditando(t._id)}}>Editar</button>
+                                <button className='btn-excluir' onClick={()=> deletar(t._id)}>Deletar</button>
                             </div>)
                         )}
                     </div>

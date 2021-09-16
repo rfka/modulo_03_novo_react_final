@@ -9,10 +9,32 @@
     border-radius: 20px;
     border: 1px solid #ff9900;
     font-size: 15px;
-    padding: 5px;
+    font-weight: bold;
+    padding: 10px;
     color: #fff;
     background-color: #ff9900;
 }
+
+.btn-editar{
+    border-radius: 20px;
+    border: 1px solid #17c500;
+    font-size: 15px;
+    font-weight: bold;
+    padding: 10px;
+    color: #17c500;
+    background-color: #fff;
+}
+
+.btn-excluir{
+    border-radius: 20px;
+    border: 1px solid #ff0000;
+    font-size: 15px;
+    font-weight: bold;
+    padding: 10px;
+    color: #ff0000;
+    background-color: #fff;
+}
+
 .cad-tdl-item{
     display: flex;
     flex-direction: column;
@@ -27,10 +49,25 @@
 .list-td{
     border-bottom: 5px solid #333333;
     height: auto;
-    padding-left: 20px;
+    /* padding-left: 20px; */
+    width: 830px;
+}
+
+.list-td-2{
+    border-bottom: 5px solid #333333;
+    height: auto;
     width: 800px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
 }
 
 h2{
     color: #ff9900;
+}
+
+h4{
+    width: 350px;
+    text-align: center;
 }
