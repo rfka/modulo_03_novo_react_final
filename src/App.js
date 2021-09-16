@@ -12,14 +12,12 @@ import { Switch, Route } from 'react-router-dom';
 function App() {
     return(
       <>
-        <Header />
           <Switch>
             <Route path='/' exact={true} component={Home} />
             <Route path='/edit/:id' component={Edit} />
             <Route path='/view/:id' component={View} />
             <Route path='/add' component={Add} />
           </Switch>
-        <Footer />
       </>
     );
 }
